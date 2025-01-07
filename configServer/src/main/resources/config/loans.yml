@@ -1,0 +1,28 @@
+spring:
+  application:
+    name: loans
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: ''
+  h2:
+    console:
+      enabled: true
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+server:
+  port: 8090
+build:
+  version: "1.0-dev"
+loans:
+  message: "Welcome to SomeBank's related local API"
+  contactDetails:
+    name: John Doe - Developer
+    email: JohnDoe@example.com
+  onCallSupport:
+    - (555)555-1234
+    - (555)523-4321

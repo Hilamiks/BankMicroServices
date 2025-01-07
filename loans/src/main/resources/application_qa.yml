@@ -1,0 +1,14 @@
+#build:
+#  version: "1.0-qa"
+#loans:
+#  message: "Welcome to SomeBank's related qa API"
+#  contactDetails:
+#    name: James Smith - QA
+#    email: JamesSmith@example.com
+#  onCallSupport:
+#    - (555)111-111
+#    - (555)222-222
+#spring:
+#  config:
+#    activate:
+#      on-profile: "qa"

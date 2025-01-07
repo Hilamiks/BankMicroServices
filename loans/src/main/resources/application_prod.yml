@@ -1,0 +1,14 @@
+#build:
+#  version: "1.0-prod"
+#loans:
+#  message: "Welcome to SomeBank's related prod API"
+#  contactDetails:
+#    name: Mike Hawk - PM
+#    email: MikeHawk@example.com
+#  onCallSupport:
+#    - (555)333-333
+#    - (555)333-333
+#spring:
+#  config:
+#    activate:
+#      on-profile: "prod"

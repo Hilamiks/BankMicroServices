@@ -1,0 +1,102 @@
+spring:
+  application:
+    name: accounts
+  profiles:
+    active: prod
+  datasource:
+#    url: jdbc:mysql://localhost:3306/accountsdb
+#    username: root
+#    password: root
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: ''
+  h2:
+    console:
+      enabled: true
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  config:
+    import: optional:configserver:http://localhost:8071/
+  sql:
+    init:
+      mode: always
+  cloud:
+    openfeign:
+      circuitbreaker:
+        enabled: true
+  data:
+    redis:
+      connect-timeout: 2s
+      host: localhost
+      port: 6379
+      timeout: 1s
+#  rabbitmq:
+#    host: localhost
+#    port: 5672
+#    username: guest
+#    password: guest
+#  config:
+#    import:
+#      - "application_qa.yml"
+#      - "application_prod.yml"
+server:
+  port: 8080
+  forward-headers-strategy: framework
+#build:
+#  version: "1.0-dev"
+#accounts:
+#  message: "Welcome to SomeBank's related local API"
+#  contactDetails:
+#    name: John Doe - Developer
+#    email: JohnDoe@example.com
+#  onCallSupport:
+#    - (555)555-1234
+#    - (555)523-4321
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  health:
+    readinessstate:
+      enabled: true
+    livenessstate:
+      enabled: true
+  endpoint:
+    shutdown:
+      access: unrestricted
+    health:
+      probes:
+        enabled: true
+  info:
+    env:
+      enabled: true
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    fetchRegistry: true
+    registerWithEureka: true
+    serviceUrl:
+      defaultZone: http://localhost:8070/eureka/
+info:
+  app:
+    name: "accounts"
+    description: "SomeBank microservice responsible for accounts"
+    version: "1.0.0"
+resilience4j:
+  retry:
+    configs:
+      default:
+        max-attempts: 3
+        wait-duration: 500
+        enable-exponential-backoff: true
+        exponential-backoff-multiplier: 2
+#        ignore-exceptions:
+#          - java.lang.NullPointerException
+        retry-exceptions:
+          - java.lang.NullPointerException
