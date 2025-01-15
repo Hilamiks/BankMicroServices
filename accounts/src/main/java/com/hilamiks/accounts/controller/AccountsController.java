@@ -6,6 +6,7 @@ import com.hilamiks.accounts.dto.ErrorResponseDto;
 import com.hilamiks.accounts.dto.ResponseDto;
 import com.hilamiks.accounts.service.IAccountsService;
 import com.hilamiks.accounts.constants.AccountsConstants;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import io.github.resilience4j.retry.annotation.Retry;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -215,10 +216,11 @@ public class AccountsController {
     )
     @GetMapping("/java-version")
     @Retry(name = "getJavaVersion", fallbackMethod = "getJavaVersionFallback")
+    @RateLimiter(name = "getJavaVersion", fallbackMethod = "getJavaVersionFallback")
     public ResponseEntity<String> getJavaVersion() {
         System.out.println("invoked getJavaVersion");
         //throw new NullPointerException("hi");
-        return ResponseEntity.ok(environment.getProperty("JAVA_HOME"));
+        return ResponseEntity.ok(environment.getProperty("java.home"));
     }
 
     public ResponseEntity<String> getJavaVersionFallback(Throwable t) {

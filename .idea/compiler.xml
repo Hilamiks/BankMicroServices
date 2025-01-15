@@ -9,10 +9,11 @@
         <outputRelativeToContentRoot value="true" />
         <module name="eurekaserver" />
         <module name="gatewayserver" />
-        <module name="accounts" />
         <module name="cards" />
         <module name="configServer" />
         <module name="loans" />
+        <module name="accounts" />
+        <module name="configserver" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -24,6 +25,7 @@
       <module name="accounts" options="-parameters" />
       <module name="cards" options="-parameters" />
       <module name="configServer" options="-parameters" />
+      <module name="configserver" options="-parameters" />
       <module name="eurekaserver" options="-parameters" />
       <module name="gatewayserver" options="-parameters" />
       <module name="loans" options="-parameters" />
