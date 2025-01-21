@@ -1,5 +1,6 @@
 package com.hilamiks.accounts.controller;
 
+import com.hilamiks.accounts.aspect.LoggableEndpoint;
 import com.hilamiks.accounts.dto.AccountsContactInfoDto;
 import com.hilamiks.accounts.dto.CustomerDto;
 import com.hilamiks.accounts.dto.ErrorResponseDto;
@@ -17,6 +18,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
@@ -40,6 +42,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(path = "/api", produces = MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
 @Validated
+@Slf4j
 public class AccountsController {
 
     private final IAccountsService accountsService;
@@ -60,6 +63,7 @@ public class AccountsController {
         responseCode = "201",
         description = AccountsConstants.MESSAGE_201
     )
+    @LoggableEndpoint
     public ResponseEntity<ResponseDto> createCustomer(
         @Valid @RequestBody final CustomerDto customerDto
     ) {
@@ -71,6 +75,7 @@ public class AccountsController {
                 .build());
     }
 
+    @LoggableEndpoint
     @Operation(
         summary = "Fetch account REST API",
         description = "REST API to get info about Customer and Account in SomeBank"
@@ -149,6 +154,7 @@ public class AccountsController {
         }
     )
     @DeleteMapping("/delete")
+    @LoggableEndpoint
     public ResponseEntity<ResponseDto> deleteCustomer(
         @Pattern(regexp = "[\\d]+") @RequestParam String mobileNumber
     ) {
@@ -167,6 +173,7 @@ public class AccountsController {
                 .build());
     }
 
+    @LoggableEndpoint
     @Operation(
         summary = "Get build information",
         description = "REST API to get build information about the Accounts microservice"
@@ -190,9 +197,11 @@ public class AccountsController {
     )
     @GetMapping("/build-info")
     public ResponseEntity<String> getBuildInfo() {
+        log.debug("getBuildInfo() called");
         return ResponseEntity.ok(buildVersion);
     }
 
+    @LoggableEndpoint
     @Operation(
         summary = "Get java version",
         description = "REST API to get java version of Accounts microservice"
@@ -223,12 +232,14 @@ public class AccountsController {
         return ResponseEntity.ok(environment.getProperty("java.home"));
     }
 
+    @LoggableEndpoint
     public ResponseEntity<String> getJavaVersionFallback(Throwable t) {
         System.out.println(t.getMessage());
         System.out.println("invoked getJavaVersionFallback");
         return ResponseEntity.ok("idk, but probably above 8, may be 17 if u lucky");
     }
 
+    @LoggableEndpoint
     @Operation(
         summary = "Get contact details",
         description = "REST API to get contact info for Accounts microservice"

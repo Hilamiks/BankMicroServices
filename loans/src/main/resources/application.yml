@@ -49,6 +49,9 @@ management:
   info:
     env:
       enabled: true
+  metrics:
+    tags:
+      application: ${spring.application.name}
 #build:
 #  version: "1.0-dev"
 #loans:
@@ -72,3 +75,10 @@ info:
     name: "loans"
     description: "SomeBank microservice responsible for loans"
     version: "1.0.0"
+logging:
+  level:
+    com:
+      hilamiks:
+        accounts: DEBUG
+  pattern:
+    level: "%5p [${spring.application.name},%X{trace_id},%X{span_id}]"

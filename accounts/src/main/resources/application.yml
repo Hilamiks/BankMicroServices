@@ -75,6 +75,9 @@ management:
   info:
     env:
       enabled: true
+  metrics:
+    tags:
+      application: ${spring.application.name}
 eureka:
   instance:
     prefer-ip-address: true
@@ -88,6 +91,8 @@ info:
     name: "accounts"
     description: "SomeBank microservice responsible for accounts"
     version: "1.0.0"
+
+
 resilience4j:
   retry:
     configs:
@@ -106,3 +111,10 @@ resilience4j:
         timeout-duration: 1000
         limit-refresh-period: 5000
         limit-for-period: 1
+logging:
+  level:
+    com:
+      hilamiks:
+        accounts: DEBUG
+  pattern:
+    level: "%5p [${spring.application.name},%X{trace_id},%X{span_id}]"

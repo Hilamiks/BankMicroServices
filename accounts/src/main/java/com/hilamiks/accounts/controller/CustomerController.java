@@ -1,5 +1,6 @@
 package com.hilamiks.accounts.controller;
 
+import com.hilamiks.accounts.aspect.LoggableEndpoint;
 import com.hilamiks.accounts.constants.AccountsConstants;
 import com.hilamiks.accounts.dto.CustomerDetailsDto;
 import com.hilamiks.accounts.service.ICustomersService;
@@ -42,6 +43,7 @@ public class CustomerController {
         description = AccountsConstants.MESSAGE_200
     )
     @GetMapping("/fetchCustomerDetails")
+    @LoggableEndpoint
     public ResponseEntity<CustomerDetailsDto> fetchCustomerDetails(
         @RequestHeader(name = "somebank-correlation-id", required = false) String correlationId,
         @Pattern(regexp = "[\\d]+") @RequestParam String mobileNumber

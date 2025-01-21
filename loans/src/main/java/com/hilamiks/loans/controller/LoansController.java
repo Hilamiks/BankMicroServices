@@ -1,5 +1,6 @@
 package com.hilamiks.loans.controller;
 
+import com.hilamiks.loans.aspect.LoggableEndpoint;
 import com.hilamiks.loans.constants.LoansConstants;
 import com.hilamiks.loans.dto.ErrorResponseDto;
 import com.hilamiks.loans.dto.LoansContactInfoDto;
@@ -74,6 +75,7 @@ public class LoansController {
     }
     )
     @PostMapping("/create")
+    @LoggableEndpoint
     public ResponseEntity<ResponseDto> createLoan(@RequestParam
                                                   @Pattern(regexp = "[\\d]+", message = "Mobile number must be valid")
                                                   String mobileNumber) {
@@ -102,6 +104,7 @@ public class LoansController {
     }
     )
     @GetMapping("/fetch")
+    @LoggableEndpoint
     public ResponseEntity<LoansDto> fetchLoanDetails(
         @RequestHeader(value = "somebank-correlation-id", required = false) String correlationId,
         @RequestParam @Pattern(regexp = "[\\d]+", message = "Mobile number must be valid") String mobileNumber) {
@@ -133,6 +136,7 @@ public class LoansController {
     }
     )
     @PutMapping("/update")
+    @LoggableEndpoint
     public ResponseEntity<ResponseDto> updateLoanDetails(@Valid @RequestBody LoansDto loansDto) {
         boolean isUpdated = iLoansService.updateLoan(loansDto);
         if (isUpdated) {
@@ -169,6 +173,7 @@ public class LoansController {
     }
     )
     @DeleteMapping("/delete")
+    @LoggableEndpoint
     public ResponseEntity<ResponseDto> deleteLoanDetails(@RequestParam
                                                          @Pattern(regexp = "[\\d]+", message = "Mobile number must be valid")
                                                          String mobileNumber) {
@@ -206,6 +211,7 @@ public class LoansController {
         }
     )
     @GetMapping("/build-info")
+    @LoggableEndpoint
     public ResponseEntity<String> getBuildInfo() {
         return ResponseEntity.ok(buildVersion);
     }
@@ -232,6 +238,7 @@ public class LoansController {
         }
     )
     @GetMapping("/java-version")
+    @LoggableEndpoint
     public ResponseEntity<String> getJavaVersion() {
         return ResponseEntity.ok(environment.getProperty("JAVA_HOME"));
     }
@@ -258,6 +265,7 @@ public class LoansController {
         }
     )
     @GetMapping("/contact-info")
+    @LoggableEndpoint
     public ResponseEntity<LoansContactInfoDto> getContactInfo() {
         return ResponseEntity.ok(contactInfoDto);
     }

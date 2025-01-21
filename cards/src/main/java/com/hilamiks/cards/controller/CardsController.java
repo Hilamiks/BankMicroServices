@@ -1,5 +1,6 @@
 package com.hilamiks.cards.controller;
 
+import com.hilamiks.cards.aspect.LoggableEndpoint;
 import com.hilamiks.cards.constants.CardsConstants;
 import com.hilamiks.cards.dto.CardsContactInfoDto;
 import com.hilamiks.cards.dto.CardsDto;
@@ -73,6 +74,7 @@ public class CardsController {
     }
     )
     @PostMapping("/create")
+    @LoggableEndpoint
     public ResponseEntity<ResponseDto> createCard(@Valid @RequestParam
                                                   @Pattern(regexp = "[\\d]+", message = "Mobile number must be valid")
                                                   String mobileNumber) {
@@ -100,6 +102,7 @@ public class CardsController {
         )
     })
     @GetMapping("/fetch")
+    @LoggableEndpoint
     public ResponseEntity<CardsDto> fetchCardDetails(
         @RequestHeader(name = "somebank-correlation-id", required = false) String correlationId,
         @RequestParam @Pattern(regexp = "[\\d]+", message = "Mobile number must be valid")
@@ -131,6 +134,7 @@ public class CardsController {
         )
     })
     @PutMapping("/update")
+    @LoggableEndpoint
     public ResponseEntity<ResponseDto> updateCardDetails(@Valid @RequestBody CardsDto cardsDto) {
         boolean isUpdated = iCardsService.updateCard(cardsDto);
         if (isUpdated) {
@@ -166,6 +170,7 @@ public class CardsController {
         )
     })
     @DeleteMapping("/delete")
+    @LoggableEndpoint
     public ResponseEntity<ResponseDto> deleteCardDetails(@RequestParam
                                                          @Pattern(regexp = "[\\d]+", message = "Mobile number must be valid")
                                                          String mobileNumber) {
@@ -203,6 +208,7 @@ public class CardsController {
         }
     )
     @GetMapping("/build-info")
+    @LoggableEndpoint
     public ResponseEntity<String> getBuildInfo() {
         return ResponseEntity.ok(buildVersion);
     }
@@ -229,6 +235,7 @@ public class CardsController {
         }
     )
     @GetMapping("/java-version")
+    @LoggableEndpoint
     public ResponseEntity<String> getJavaVersion() {
         return ResponseEntity.ok(environment.getProperty("JAVA_HOME"));
     }
@@ -255,6 +262,7 @@ public class CardsController {
         }
     )
     @GetMapping("/contact-info")
+    @LoggableEndpoint
     public ResponseEntity<CardsContactInfoDto> getContactInfo() {
         return ResponseEntity.ok(contactInfoDto);
     }

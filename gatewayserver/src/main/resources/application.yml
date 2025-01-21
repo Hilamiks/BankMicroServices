@@ -37,6 +37,9 @@ management:
   endpoint:
     gateway:
       access: unrestricted
+  metrics:
+    tags:
+      application: ${spring.application.name}
 info:
   app:
     name: "gatewayserver"
@@ -47,6 +50,7 @@ logging:
     com:
       hilamiks:
         gatewayserver: DEBUG
+    level: "%5p [${spring.application.name},%X{trace_id},%X{span_id}]"
 server:
   forward-headers-strategy: framework
 resilience4j:
