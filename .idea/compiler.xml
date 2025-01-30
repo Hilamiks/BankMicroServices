@@ -12,6 +12,7 @@
         <module name="cards" />
         <module name="configServer" />
         <module name="loans" />
+        <module name="messages" />
         <module name="accounts" />
         <module name="configserver" />
       </profile>
@@ -29,6 +30,7 @@
       <module name="eurekaserver" options="-parameters" />
       <module name="gatewayserver" options="-parameters" />
       <module name="loans" options="-parameters" />
+      <module name="messages" options="-parameters" />
     </option>
   </component>
 </project>

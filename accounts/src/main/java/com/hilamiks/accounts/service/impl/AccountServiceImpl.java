@@ -1,6 +1,7 @@
 package com.hilamiks.accounts.service.impl;
 
 import com.hilamiks.accounts.dto.AccountsDto;
+import com.hilamiks.accounts.dto.AccountsMsgDto;
 import com.hilamiks.accounts.dto.CustomerDto;
 import com.hilamiks.accounts.entity.Accounts;
 import com.hilamiks.accounts.entity.Customer;
@@ -13,6 +14,8 @@ import com.hilamiks.accounts.repository.CustomerRepository;
 import com.hilamiks.accounts.service.IAccountsService;
 import com.hilamiks.accounts.constants.AccountsConstants;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,10 +24,12 @@ import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class AccountServiceImpl implements IAccountsService {
 
     private final AccountsRepository accountsRepository;
     private final CustomerRepository customerRepository;
+    private final StreamBridge streamBridge;
 
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -37,7 +42,20 @@ public class AccountServiceImpl implements IAccountsService {
         Customer saved = customerRepository.save(
             toSave);
         Accounts account = createAccountForNewCustomer(saved);
-        accountsRepository.save(account);
+        sendCommunication(accountsRepository.save(account), saved);
+    }
+
+    private void sendCommunication(Accounts account, Customer customer) {
+        AccountsMsgDto dto = new AccountsMsgDto(
+            account.getAccountNumber(),
+            customer.getName(),
+            customer.getEmail(),
+            customer.getMobileNumber()
+        );
+
+        log.info("Sending communication request for the details: {}", dto);
+        boolean result = streamBridge.send("sendCommunication-out-0", dto);
+        log.info("Request processed?: {}", result);
     }
 
     @Override
@@ -100,6 +118,22 @@ public class AccountServiceImpl implements IAccountsService {
         account.setAccountType(AccountsConstants.SAVINGS);
         account.setBranchAddress(AccountsConstants.ADDRESS);
         return account;
+    }
+
+    @Override
+    public boolean updateCommunicationStatus(Long accountNumber) {
+        boolean isUpdated = false;
+
+        if (accountNumber != null) {
+            Accounts accounts = accountsRepository.findById(accountNumber).orElseThrow(
+                () -> new ResourceNotFoundException("Account number " + accountNumber + " does not exist")
+            );
+            accounts.setCommunicationSw(true);
+            accountsRepository.save(accounts);
+            isUpdated = true;
+        }
+
+        return isUpdated;
     }
 
 }

@@ -25,9 +25,24 @@ spring:
     init:
       mode: always
   cloud:
+    function:
+      definition: updateCommunication
     openfeign:
       circuitbreaker:
         enabled: true
+    stream:
+      bindings:
+        updateCommunication-in-0:
+          destination: communication-sent
+          group: ${spring.application.name}
+        sendCommunication-out-0:
+          destination: send-communication
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+    connection-timeout: 10s
   data:
     redis:
       connect-timeout: 2s
