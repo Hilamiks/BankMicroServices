@@ -1,0 +1,6 @@
+dependencies:
+- name: somebank-common
+  repository: file://../../somebank-common
+  version: 0.1.0
+digest: sha256:6f58c255a6ed40c524f2c795c5620aa3b9cfd12d4030ad0ba19fad6c2bfccedb
+generated: "2025-02-02T15:22:13.937327652+03:00"
