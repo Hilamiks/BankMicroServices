@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.circuitbreaker.resilience4j.ReactiveResilience4JCircuitBreakerFactory;
 import org.springframework.cloud.circuitbreaker.resilience4j.Resilience4JConfigBuilder;
 import org.springframework.cloud.client.circuitbreaker.Customizer;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.gateway.filter.ratelimit.KeyResolver;
 import org.springframework.cloud.gateway.filter.ratelimit.RedisRateLimiter;
 import org.springframework.cloud.gateway.route.RouteLocator;
@@ -19,6 +20,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 
 @SpringBootApplication
+@EnableDiscoveryClient
 public class GatewayserverApplication {
 
 	public static void main(String[] args) {
@@ -40,7 +42,8 @@ public class GatewayserverApplication {
 									.setFallbackUri("forward:/contactSupport")
 								;
 							}))
-					.uri("lb://ACCOUNTS")
+//					.uri("lb://ACCOUNTS")
+					.uri("http://accounts:8080")
 				)
 				.route(p -> p
 					.path("/somebank/cards/**")
@@ -56,7 +59,8 @@ public class GatewayserverApplication {
 										2,
 										true);
 							}))
-					.uri("lb://CARDS")
+					//.uri("lb://CARDS")
+					.uri("http://cards:9000")
 				)
 				.route(p -> p
 					.path("/somebank/loans/**")
@@ -68,7 +72,8 @@ public class GatewayserverApplication {
 									.setRateLimiter(redisRateLimiter())
 									.setKeyResolver(keyResolver());
 							}))
-					.uri("lb://LOANS")
+					//.uri("lb://LOANS")
+					.uri("http://loans:8090")
 				)
 			.build();
 	}

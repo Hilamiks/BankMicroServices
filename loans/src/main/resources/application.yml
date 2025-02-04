@@ -22,6 +22,10 @@ spring:
   sql:
     init:
       mode: always
+  cloud:
+    kubernetes:
+      discovery:
+        all-namespaces: true
 #  rabbitmq:
 #    host: localhost
 #    port: 5672
@@ -62,14 +66,14 @@ management:
 #  onCallSupport:
 #    - (555)555-1234
 #    - (555)523-4321
-eureka:
-  instance:
-    prefer-ip-address: true
-  client:
-    fetchRegistry: true
-    registerWithEureka: true
-    serviceUrl:
-      defaultZone: http://localhost:8070/eureka/
+#eureka:
+#  instance:
+#    prefer-ip-address: true
+#  client:
+#    fetchRegistry: true
+#    registerWithEureka: true
+#    serviceUrl:
+#      defaultZone: http://localhost:8070/eureka/
 info:
   app:
     name: "loans"

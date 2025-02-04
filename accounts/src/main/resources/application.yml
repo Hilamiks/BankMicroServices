@@ -25,6 +25,9 @@ spring:
     init:
       mode: always
   cloud:
+    kubernetes:
+      discovery:
+        all-namespaces: true
     function:
       definition: updateCommunication
     openfeign:
@@ -97,14 +100,14 @@ management:
   metrics:
     tags:
       application: ${spring.application.name}
-eureka:
-  instance:
-    prefer-ip-address: true
-  client:
-    fetchRegistry: true
-    registerWithEureka: true
-    serviceUrl:
-      defaultZone: http://localhost:8070/eureka/
+#eureka:
+#  instance:
+#    prefer-ip-address: true
+#  client:
+#    fetchRegistry: true
+#    registerWithEureka: true
+#    serviceUrl:
+#      defaultZone: http://localhost:8070/eureka/
 info:
   app:
     name: "accounts"
