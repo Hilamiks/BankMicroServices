@@ -1,6 +1,6 @@
 package com.hilamiks.accounts.exception;
 
-import com.hilamiks.accounts.dto.ErrorResponseDto;
+import com.hilamiks.common.dto.ErrorResponseDto;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;

@@ -1,4 +1,4 @@
-package com.hilamiks.accounts.dto;
+package com.hilamiks.common.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;

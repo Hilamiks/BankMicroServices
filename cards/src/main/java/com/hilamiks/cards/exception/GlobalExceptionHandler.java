@@ -1,6 +1,6 @@
 package com.hilamiks.cards.exception;
 
-import com.hilamiks.cards.dto.ErrorResponseDto;
+import com.hilamiks.common.dto.ErrorResponseDto;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -38,12 +38,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponseDto> handleGlobalException(Exception exception,
                                                                   WebRequest webRequest) {
-        ErrorResponseDto errorResponseDTO = new ErrorResponseDto(
-            webRequest.getDescription(false),
-            HttpStatus.INTERNAL_SERVER_ERROR,
-            exception.getMessage(),
-            LocalDateTime.now()
-        );
+        ErrorResponseDto errorResponseDTO = ErrorResponseDto.builder()
+            .timestamp(LocalDateTime.now())
+            .errorMessage(exception.getMessage())
+            .errorCode(HttpStatus.INTERNAL_SERVER_ERROR)
+            .apiPath(webRequest.getDescription(false))
+            .build();
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
             .body(errorResponseDTO);
     }
@@ -51,24 +51,24 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ErrorResponseDto> handleResourceNotFoundException(ResourceNotFoundException exception,
                                                                             WebRequest webRequest) {
-        ErrorResponseDto errorResponseDTO = new ErrorResponseDto(
-            webRequest.getDescription(false),
-            HttpStatus.NOT_FOUND,
-            exception.getMessage(),
-            LocalDateTime.now()
-        );
+        ErrorResponseDto errorResponseDTO = ErrorResponseDto.builder()
+            .timestamp(LocalDateTime.now())
+            .errorMessage(exception.getMessage())
+            .errorCode(HttpStatus.NOT_FOUND)
+            .apiPath(webRequest.getDescription(false))
+            .build();
         return new ResponseEntity<>(errorResponseDTO, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(CardAlreadyExistsException.class)
     public ResponseEntity<ErrorResponseDto> handleCardAlreadyExistsException(CardAlreadyExistsException exception,
                                                                              WebRequest webRequest){
-        ErrorResponseDto errorResponseDTO = new ErrorResponseDto(
-            webRequest.getDescription(false),
-            HttpStatus.BAD_REQUEST,
-            exception.getMessage(),
-            LocalDateTime.now()
-        );
+        ErrorResponseDto errorResponseDTO = ErrorResponseDto.builder()
+            .timestamp(LocalDateTime.now())
+            .errorMessage(exception.getMessage())
+            .errorCode(HttpStatus.BAD_REQUEST)
+            .apiPath(webRequest.getDescription(false))
+            .build();
         return new ResponseEntity<>(errorResponseDTO, HttpStatus.BAD_REQUEST);
     }
 

@@ -1,6 +1,6 @@
 package com.hilamiks.loans.exception;
 
-import com.hilamiks.loans.dto.ErrorResponseDto;
+import com.hilamiks.common.dto.ErrorResponseDto;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -38,36 +38,36 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponseDto> handleGlobalException(Exception exception,
                                                                   WebRequest webRequest) {
-        ErrorResponseDto errorResponseDTO = new ErrorResponseDto(
-            webRequest.getDescription(false),
-            HttpStatus.INTERNAL_SERVER_ERROR,
-            exception.getMessage(),
-            LocalDateTime.now()
-        );
+        ErrorResponseDto errorResponseDTO = ErrorResponseDto.builder()
+            .apiPath(webRequest.getDescription(false))
+            .errorCode(HttpStatus.INTERNAL_SERVER_ERROR)
+            .errorMessage(exception.getMessage())
+            .timestamp(LocalDateTime.now())
+            .build();
         return new ResponseEntity<>(errorResponseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ErrorResponseDto> handleResourceNotFoundException(ResourceNotFoundException exception,
                                                                             WebRequest webRequest) {
-        ErrorResponseDto errorResponseDTO = new ErrorResponseDto(
-            webRequest.getDescription(false),
-            HttpStatus.NOT_FOUND,
-            exception.getMessage(),
-            LocalDateTime.now()
-        );
+        ErrorResponseDto errorResponseDTO = ErrorResponseDto.builder()
+            .apiPath(webRequest.getDescription(false))
+            .errorCode(HttpStatus.NOT_FOUND)
+            .errorMessage(exception.getMessage())
+            .timestamp(LocalDateTime.now())
+            .build();
         return new ResponseEntity<>(errorResponseDTO, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(LoanAlreadyExistsException.class)
     public ResponseEntity<ErrorResponseDto> handleLoanAlreadyExistsException(LoanAlreadyExistsException exception,
                                                                              WebRequest webRequest){
-        ErrorResponseDto errorResponseDTO = new ErrorResponseDto(
-            webRequest.getDescription(false),
-            HttpStatus.BAD_REQUEST,
-            exception.getMessage(),
-            LocalDateTime.now()
-        );
+        ErrorResponseDto errorResponseDTO = ErrorResponseDto.builder()
+            .apiPath(webRequest.getDescription(false))
+            .errorCode(HttpStatus.BAD_REQUEST)
+            .errorMessage(exception.getMessage())
+            .timestamp(LocalDateTime.now())
+            .build();
         return new ResponseEntity<>(errorResponseDTO, HttpStatus.BAD_REQUEST);
     }
 
